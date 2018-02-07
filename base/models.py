@@ -23,8 +23,14 @@ class Child(models.Model):
     parents_phone_number = models.CharField(max_length=17, blank=True,                 # parent's phone number, using regex for detecting
                                             verbose_name='Номер телефону батьків')
 
-    gender = models.BooleanField(default=False, verbose_name='Хлопець')                # if set false that's mean that a child is female,
+    #gender = models.BooleanField(default=False, verbose_name='Хлопець')                # if set false that's mean that a child is female,
                                                                                        # if set true, means that the child is male gender
+
+    GENDER = (
+        ("M", "Хлопець"),
+        ("F", "Дівчина"),
+    )
+
     parents_name = models.CharField(max_length=100, verbose_name='Ім\'я батьків')      # parent's name
 
     payment = models.IntegerField(verbose_name='Оплата', default=250)                     # how many monet a child must to pay
@@ -37,6 +43,9 @@ class Child(models.Model):
 
     def __str__(self):
         return self.last_name
+
+    def full_name(self):
+        return '%s %s %s', self.last_name, self.first_name, self.second_name
 
 
 class Group(models.Model):

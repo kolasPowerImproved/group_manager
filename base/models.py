@@ -22,6 +22,7 @@ class Child(models.Model):
                                           verbose_name='Номер телефону дитини')  # validators should be a list | validators=[phone_regex],
     parents_phone_number = models.CharField(max_length=17, blank=True,                 # parent's phone number, using regex for detecting
                                             verbose_name='Номер телефону батьків')
+    groups = models.ManyToManyField('Group')
 
     #gender = models.BooleanField(default=False, verbose_name='Хлопець')                # if set false that's mean that a child is female,
                                                                                        # if set true, means that the child is male gender
@@ -30,6 +31,7 @@ class Child(models.Model):
         ("M", "Хлопець"),
         ("F", "Дівчина"),
     )
+    gender = models.CharField(max_length=1, choices=GENDER, default='M')
 
     parents_name = models.CharField(max_length=100, verbose_name='Ім\'я батьків')      # parent's name
 
@@ -45,7 +47,8 @@ class Child(models.Model):
         return self.last_name
 
     def full_name(self):
-        return '%s %s %s', self.last_name, self.first_name, self.second_name
+        full_name = '%s %s %s', self.last_name, self.first_name, self.second_name
+        return full_name
 
 
 class Group(models.Model):
@@ -55,12 +58,12 @@ class Group(models.Model):
     """
     group_name = models.CharField(max_length=100, verbose_name='Назва')                    # group's name
     group_description = models.CharField(max_length=500, verbose_name='Опис')              # short description of the group
-    group_image = models.FileField(upload_to='base/images/', verbose_name='Зображення')    # group's poster
-    group_music = models.FileField(upload_to='base/music/', verbose_name='Музика')         # group's music. Can be many different music
+    group_image = models.ImageField(upload_to='base/static/images/', verbose_name='Зображення')    # group's poster
+    group_music = models.FileField(upload_to='base/static/music/', verbose_name='Музика')         # group's music. Can be many different music
 
     salary = models.FloatField(max_length=10, verbose_name='Зарплата', default=0.3)        # salary per one child in the group
-
-    addiction = models.ForeignKey('Child', on_delete=models.CASCADE)              # addiction with group and child
+    trainer = models.ForeignKey('Trainer', models.CASCADE, null=True, blank=True)
+    # addiction = models.ForeignKey('Child', on_delete=models.CASCADE)             # addiction with group and child
 
     class Meta:
         verbose_name = _('Група')
@@ -82,9 +85,9 @@ class Trainer(models.Model):
     phone_regex = RegexValidator(regex=r'^\+38\(0\d{2}\)\ ?(?:\d(?:-|\.|\ )?){6}\d$',
                                  message="Номер телефону має бути введений в форматі: '+380999999'.")  # regex for phone number detecting
 
-    #trainer_phone_number = models.CharField(max_length=17, blank=True, verbose_name='Номер телефону')  # validators should be a list | validators=[phone_regex],
+    trainer_phone_number = models.CharField(max_length=17, blank=True, verbose_name='Номер телефону')  # validators should be a list | validators=[phone_regex],
     # here have a admin runtime error.
-    addiction = models.ForeignKey('Group', on_delete=models.CASCADE)               # addiction with trainer's and groups
+    # addiction = models.ForeignKey('Group', on_delete=models.CASCADE)               # addiction with trainer's and groups
 
     class Meta:
         verbose_name = _('Тренер')

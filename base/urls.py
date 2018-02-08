@@ -1,6 +1,8 @@
 from django.urls import path
-from base.views import GroupsList
+
+from base import views
+from base.views import index
 
 urlpatterns = [
-    path('publishers/', GroupsList.as_view()),
+    path('/', views.index),
 ]

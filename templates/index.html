@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+{#    <div class="page-header">#}
+{#        <h1><a href="/">Groups</a></h1>#}
+{#    </div>#}
+
+    <div class="container">
+        <div id="main-grid">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="container">
+                        <div id="group-grid">
+                            {% for group in groups %}
+                                <div class="row">
+                                    <div class="col-sm-4"><a href="">{{ group.group_name }}</a></div>
+                                    <div class="col-sm-3">{{ group.group_description|linebreaksbr }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4"><img src="{{ group.group_image.url }}" alt="img" class="img-responsive img-rounded"></div>
+                                    <div class="col-sm-3">
+                                        <button type="button" class="btn btn-secondary">Опис</button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

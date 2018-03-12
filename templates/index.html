@@ -18,9 +18,9 @@
                                     <div class="col-sm-3">{{ group.group_description|linebreaksbr }}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-4"><img src="{{ group.group_image.url }}" alt="img" class="img-responsive img-rounded"></div>
+                                    <div class="col-sm-4"><img src="{{ group.group_image.url }}" alt="img" class="ratio img-responsive img-circle"></div>
                                     <div class="col-sm-3">
-                                        <button type="button" class="btn btn-secondary">Опис</button>
+                                        <a href="{% url 'group_detail' group.group_name %}" class="btn btn-primary btn-lg" role="button" aria-disabled="false">Докладніше</a>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -30,6 +30,16 @@
             </div>
         </div>
     </div>
+{% for group in groups %}
+    <div class="card" style="width: 20rem;">
+  <img class="card-img-top" src="{{ group.group_image.url }}" alt="Card image cap">
+  <div class="card-block">
+    <h4 class="card-title">{{ group.group_name }}</h4>
+    <p class="card-text">{{ group.group_description }}.</p>
+    <a href="{% url 'group_detail' group.group_name %}" class="btn btn-primary">Go somewhere</a>
+  </div>
+    {% endfor %}
+</div>
 
 
 

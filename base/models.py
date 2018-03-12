@@ -19,21 +19,21 @@ class Child(models.Model):
                                  message="Номер телефону має бути введений в форматі: '+380999999'.")  #regex for phone number detect
 
     child_phone_number = models.CharField(max_length=17, blank=True,                   # child's phone number, using regex for detecting
-                                          verbose_name='Номер телефону дитини')  # validators should be a list | validators=[phone_regex],
+                                          verbose_name='Номер телефону дитини')        # validators should be a list | validators=[phone_regex],
     parents_phone_number = models.CharField(max_length=17, blank=True,                 # parent's phone number, using regex for detecting
                                             verbose_name='Номер телефону батьків')
-    groups = models.ManyToManyField('Group')
+    groups = models.ManyToManyField('Group', related_name='children')
 
     #gender = models.BooleanField(default=False, verbose_name='Хлопець')                # if set false that's mean that a child is female,
-                                                                                       # if set true, means that the child is male gender
+                                                                                        # if set true, means that the child is male gender
 
     GENDER = (
         ("M", "Хлопець"),
         ("F", "Дівчина"),
     )
-    gender = models.CharField(max_length=1, choices=GENDER, default='M')
+    gender = models.CharField(max_length=1, choices=GENDER, default='F')
 
-    parents_name = models.CharField(max_length=100, verbose_name='Ім\'я батьків')      # parent's name
+    parents_name = models.CharField(max_length=100, verbose_name='Ім\'я батьків')         # parent's name
 
     payment = models.IntegerField(verbose_name='Оплата', default=250)                     # how many monet a child must to pay
     date_of_payment = models.DateField(auto_now=False, auto_now_add=False, default='',    # date of last payment
@@ -56,14 +56,14 @@ class Group(models.Model):
     Description of the group's class,
     one group can have many children and many trainers
     """
-    group_name = models.CharField(max_length=100, verbose_name='Назва')                    # group's name
-    group_description = models.CharField(max_length=500, verbose_name='Опис')              # short description of the group
-    group_image = models.ImageField(upload_to='base/static/images/', verbose_name='Зображення')    # group's poster
-    group_music = models.FileField(upload_to='base/static/music/', verbose_name='Музика')         # group's music. Can be many different music
+    group_name = models.CharField(max_length=100, verbose_name='Назва', unique=True)                    # group's name
+    group_description = models.CharField(max_length=500, verbose_name='Опис')                           # short description of the group
+    group_image = models.ImageField(upload_to='base/static/images/', verbose_name='Зображення')         # group's poster
+    group_music = models.FileField(upload_to='base/static/music/', verbose_name='Музика')               # group's music. Can be many different music
 
-    salary = models.FloatField(max_length=10, verbose_name='Зарплата', default=0.3)        # salary per one child in the group
+    salary = models.FloatField(max_length=10, verbose_name='Зарплата', default=0.3)                     # salary per one child in the group
     trainer = models.ForeignKey('Trainer', models.CASCADE, null=True, blank=True)
-    # addiction = models.ForeignKey('Child', on_delete=models.CASCADE)             # addiction with group and child
+    # addiction = models.ForeignKey('Child', on_delete=models.CASCADE)                                  # addiction with group and child
 
     class Meta:
         verbose_name = _('Група')

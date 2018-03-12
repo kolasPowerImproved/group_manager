@@ -6,6 +6,7 @@
   height: 100%;
   position: fixed;
   width: 285px;
+  opacity: 0.9;
 }
 
 
@@ -31,7 +32,7 @@
   }
 
 .menu a {
-  color: #fff;
+  color: #7ab6db;
   font-size: 15px;
   text-decoration: none;
   text-transform: uppercase;
@@ -45,7 +46,7 @@
 }
 
 .icon-menu {
-  color: #fff;
+  color: #7ab6db;
   cursor: pointer;
   font-family: 'Open Sans', sans-serif;
   font-size: 20px;

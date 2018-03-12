@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-11">{{ group.group_name }}</div>
+            <div class="col-sm-1"><a href="{% url 'index' %}" class="btn btn-primary btn-lg"
+                                     role="button" aria-disabled="false">На головну</a><br></div>
+            <br>
+            <div class="col-sm-12"><img src="{{ group.group_image.url }}" alt="img" class="img-responsive img-rounded">
+            </div>
+            <div class="col-sm-12">{{ group.group_description }}</div>
+            <div class="col-sm-12">Full description</div>
+            <div class="col-sm-1">{{ boys }}</div>
+            <div class="col-sm-3">Female {{ girls }}</div>
+            <div class="col-sm-1">{{ count_of_children }}</div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12">Photo</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">Video</div>
+    </div>
+    </div>
+{% endblock %}

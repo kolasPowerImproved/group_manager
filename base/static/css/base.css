@@ -1,6 +1,15 @@
 body {
      margin: 0;
-     background-image: url("../images/site-background.jpg");
-     background-repeat:no-repeat;
+     #background-image: url("../images/site-background.jpg");
+     background-repeat:round;
      font: 28px/36px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.caption div {
+    box-shadow: 0 0 5px #C8C8C8;
+    transition: all 0.3s ease 0s;
+}
+.img-circle {
+     border-radius: 50%;
+}
+

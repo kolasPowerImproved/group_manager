@@ -1,9 +1,13 @@
 from django.db.models import QuerySet
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 
 from base.models import Group, Child, Trainer
+from base.serializers import GroupSerializer, ChildSerializer, TrainerSerializer
 
 
 def index(request):
@@ -32,3 +36,23 @@ def group_detail(request, group_name):
         return render(request, 'group_detail.html', context=context)
     else:
         return render(request, 'index.html')
+
+
+@csrf_exempt
+def group_list(request):
+    """
+    List all groups, or create a new group
+    :param request:
+    :return:
+    """
+    if request.method == 'GET':
+        groups = Group.objects.all()
+        serializer = GroupSerializer(groups, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = GroupSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)

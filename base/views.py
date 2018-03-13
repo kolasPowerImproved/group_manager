@@ -56,3 +56,29 @@ def group_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+def group_detail(request, pk):
+    """
+    Retrieve, update or delete a group
+    :param request:
+    :param pk:
+    :return:
+    """
+    try:
+        group = Group.objects.get(pk=pk)
+    except Group.DoesNotExist:
+        return HttpResponse(status=404)
+    if request.method == 'GET':
+        serializer = GroupSerializer(group)
+        return JsonResponse(serializer.data)
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = GroupSerializer(group, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        group.delete()
+        return HttpResponse(status=204)

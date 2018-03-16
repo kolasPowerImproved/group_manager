@@ -49,43 +49,6 @@ class ChildSerializer(serializers.ModelSerializer):
         return instance
 
 
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = (
-            "group_name",
-            "group_description",
-            "group_image",
-            "group_music",
-            "salary",
-            "trainer"
-        )
-
-    def create(self, validated_data):
-        """
-        Create and return new 'Group'
-        :param validated_data:
-        :return:
-        """
-        return Group.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        """
-        Update and return an existing 'Group' instance, give the validated data
-        :param instance:
-        :param validated_data:
-        :return:
-        """
-        instance.group_name = validated_data.get('group_name', instance.group_name)
-        instance.group_description = validated_data.get('group_description', instance.group_description)
-        instance.group_image = validated_data.get('group_image', instance.group_image)
-        instance.group_music = validated_data.get('group_music', instance.group_music)
-        instance.salary = validated_data.get('salary', instance.salary)
-        instance.trainer = validated_data.get('trainer', instance.trainer)
-        instance.save()
-        return instance
-
-
 class TrainerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trainer
@@ -117,3 +80,45 @@ class TrainerSerializer(serializers.ModelSerializer):
         instance.trainer_phone_number = validated_data.get('trainer_phone_number', instance.trainer_phone_number)
         instance.save()
         return instance
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    trainer = TrainerSerializer()
+
+    class Meta:
+        model = Group
+        fields = (
+            "group_name",
+            "group_description",
+            "group_image",
+            "group_music",
+            "salary",
+            'trainer',
+        )
+
+    def create(self, validated_data):
+        """
+        Create and return new 'Group'
+        :param validated_data:
+        :return:
+        """
+        return Group.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        """
+        Update and return an existing 'Group' instance, give the validated data
+        :param instance:
+        :param validated_data:
+        :return:
+        """
+        instance.group_name = validated_data.get('group_name', instance.group_name)
+        instance.group_description = validated_data.get('group_description', instance.group_description)
+        instance.group_image = validated_data.get('group_image', instance.group_image)
+        instance.group_music = validated_data.get('group_music', instance.group_music)
+        instance.salary = validated_data.get('salary', instance.salary)
+        instance.trainer = validated_data.get('trainer', instance.trainer)
+        instance.save()
+        return instance
+
+
+

@@ -72,6 +72,9 @@ class Group(models.Model):
     def __str__(self):
         return self.group_name
 
+    def get_img(self):
+        return self.group_image.url
+
 
 class Trainer(models.Model):
     """

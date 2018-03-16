@@ -39,7 +39,7 @@ def group_detail(request, group_name):
 
 
 @csrf_exempt
-def group_list(request):
+def group_list_api(request):
     """
     List all groups, or create a new group
     :param request:
@@ -58,19 +58,51 @@ def group_list(request):
         return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-def group_detail(request, pk):
+def group_detail_api(request, group_name):
     """
     Retrieve, update or delete a group
-    :param request:
+    :param request:ти
     :param pk:
     :return:
     """
     try:
-        group = Group.objects.get(pk=pk)
+        group = get_object_or_404(Group, group_name=group_name)
+        girls = group.children.filter(gender='F').count()
+        boys = group.children.filter(gender='M').count()
+        context = {'group': group, 'boys': boys, 'girls': girls}
     except Group.DoesNotExist:
         return HttpResponse(status=404)
     if request.method == 'GET':
         serializer = GroupSerializer(group)
+        return JsonResponse({**serializer.data, "girls": girls, "boys": boys})
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = GroupSerializer(group, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        group.delete()
+        return HttpResponse(status=204)
+
+@csrf_exempt
+def childs_detail_api(request, group_name):
+    """
+    Retrieve, update or delete a child
+    :param request:ти
+    :param pk:
+    :return:
+    """
+    try:
+        group = get_object_or_404(Group, group_name=group_name)
+        girls = group.children.filter(gender='F').count()
+        boys = group.children.filter(gender='M').count()
+        context = {'group': group, 'boys': boys, 'girls': girls}
+    except Group.DoesNotExist:
+        return HttpResponse(status=404)
+    if request.method == 'GET':
+        serializer = ChildSerializer(girls)
         return JsonResponse(serializer.data)
     elif request.method == 'PUT':
         data = JSONParser().parse(request)

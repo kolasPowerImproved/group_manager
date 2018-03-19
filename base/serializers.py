@@ -94,6 +94,13 @@ class GroupSerializer(serializers.ModelSerializer):
             "group_music",
             "salary",
             'trainer',
+            'monday_time',
+            'tuesday_time',
+            'wednesday_time',
+            'thursday_time',
+            'friday_time',
+            'saturday_time',
+            'sunday_time',
         )
 
     def create(self, validated_data):

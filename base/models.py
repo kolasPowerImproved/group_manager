@@ -65,6 +65,14 @@ class Group(models.Model):
     trainer = models.ForeignKey('Trainer', models.CASCADE, null=True, blank=True)
     # addiction = models.ForeignKey('Child', on_delete=models.CASCADE)                                  # addiction with group and child
 
+    monday_time = models.CharField(max_length=100, verbose_name='Понеділок', unique=False, default='-')
+    tuesday_time = models.CharField(max_length=100, verbose_name='Вівторок', unique=False, default='-')
+    wednesday_time = models.CharField(max_length=100, verbose_name='Середа', unique=False, default='-')
+    thursday_time = models.CharField(max_length=100, verbose_name='Четвер', unique=False, default='-')
+    friday_time = models.CharField(max_length=100, verbose_name="П'ятниця", unique=False, default='-')
+    saturday_time = models.CharField(max_length=100, verbose_name='Субота', unique=False, default='-')
+    sunday_time = models.CharField(max_length=100, verbose_name='Неділя', unique=False, default='-')
+
     class Meta:
         verbose_name = _('Група')
         verbose_name_plural = _('Групи')

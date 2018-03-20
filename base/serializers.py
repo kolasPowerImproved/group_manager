@@ -101,6 +101,7 @@ class GroupSerializer(serializers.ModelSerializer):
             'friday_time',
             'saturday_time',
             'sunday_time',
+            'images_for_slider',
         )
 
     def create(self, validated_data):

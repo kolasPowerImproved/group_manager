@@ -69,6 +69,7 @@ def group_detail_api(request, group_name):
         group = get_object_or_404(Group, group_name=group_name)
         girls = group.children.filter(gender='F').count()
         boys = group.children.filter(gender='M').count()
+        # print(group.children.date_of_birth)
         context = {'group': group, 'boys': boys, 'girls': girls}
     except Group.DoesNotExist:
         return HttpResponse(status=404)

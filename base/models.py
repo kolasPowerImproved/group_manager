@@ -73,6 +73,8 @@ class Group(models.Model):
     saturday_time = models.CharField(max_length=100, verbose_name='Субота', unique=False, default='-')
     sunday_time = models.CharField(max_length=100, verbose_name='Неділя', unique=False, default='-')
 
+    images_for_slider = models.ManyToManyField('ImagesForSlider', related_name='children')
+
     class Meta:
         verbose_name = _('Група')
         verbose_name_plural = _('Групи')
@@ -82,6 +84,12 @@ class Group(models.Model):
 
     def get_img(self):
         return self.group_image.url
+
+    def get_image_gor_slider(self):
+        return self.images_for_slider.url
+
+    def music_name(self):
+        return self.group_music
 
 
 class Trainer(models.Model):
@@ -106,3 +114,7 @@ class Trainer(models.Model):
 
     def __str__(self):
         return self.last_name
+
+
+class ImagesForSlider(models.Model):
+    image = models.ImageField(upload_to='base/static/images/')

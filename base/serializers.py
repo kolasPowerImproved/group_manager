@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from base.models import Child, Group, Trainer
+from base.models import Child, Group, Trainer, ImagesForSlider, GroupMusic
 
 
 class ChildSerializer(serializers.ModelSerializer):
@@ -82,8 +82,30 @@ class TrainerSerializer(serializers.ModelSerializer):
         return instance
 
 
+class ImagesForSliderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesForSlider
+        fields = (
+            "image",
+            "image_name",
+            'id',
+        )
+
+
+class GroupMusicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupMusic
+        fields = (
+            "music",
+            "music_name",
+            'id',
+        )
+
+
 class GroupSerializer(serializers.ModelSerializer):
     trainer = TrainerSerializer()
+    images_for_slider = ImagesForSliderSerializer(many=True)
+    music_for_player = GroupMusicSerializer(many=True)
 
     class Meta:
         model = Group
@@ -102,6 +124,7 @@ class GroupSerializer(serializers.ModelSerializer):
             'saturday_time',
             'sunday_time',
             'images_for_slider',
+            'music_for_player',
         )
 
     def create(self, validated_data):
@@ -122,6 +145,7 @@ class GroupSerializer(serializers.ModelSerializer):
         instance.group_name = validated_data.get('group_name', instance.group_name)
         instance.group_description = validated_data.get('group_description', instance.group_description)
         instance.group_image = validated_data.get('group_image', instance.group_image)
+        instance.images_for_slider = validated_data.get('images_for_slider', instance.images_for_slider)
         instance.group_music = validated_data.get('group_music', instance.group_music)
         instance.salary = validated_data.get('salary', instance.salary)
         instance.trainer = validated_data.get('trainer', instance.trainer)

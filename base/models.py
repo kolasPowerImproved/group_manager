@@ -51,6 +51,46 @@ class Child(models.Model):
         return full_name
 
 
+class ImagesForSlider(models.Model):
+    """
+    Used for related Many to Many field to the Group model
+    Stored images
+    """
+    # image - file to upload
+    image = models.ImageField(upload_to='base/static/images/', verbose_name='Зображення')
+    # image_name = name of the uploaded file to render
+    image_name = models.CharField(max_length=100, verbose_name='Назва', unique=True, default="Image")
+
+    def __str__(self):
+        return self.image_name
+
+    def get_img_url(self):
+        return self.image.url
+
+    def get_img(self):
+        return self.image
+
+
+class GroupMusic(models.Model):
+    """
+    Used for related Many to Many field to the Group model
+    Stored music
+    """
+    # music - file to upload
+    music = models.FileField(upload_to='base/static/music/', verbose_name='Музика')
+    # music_name = name of the uploaded file to render
+    music_name = models.CharField(max_length=100, verbose_name='Назва', unique=True, default="Music")
+
+    def __str__(self):
+        return self.music_name
+
+    def get_music_url(self):
+        return self.music.url
+
+    def get_music(self):
+        return self.music
+
+
 class Group(models.Model):
     """
     Description of the group's class,
@@ -65,6 +105,7 @@ class Group(models.Model):
     trainer = models.ForeignKey('Trainer', models.CASCADE, null=True, blank=True)
     # addiction = models.ForeignKey('Child', on_delete=models.CASCADE)                                  # addiction with group and child
 
+    # days of group work
     monday_time = models.CharField(max_length=100, verbose_name='Понеділок', unique=False, default='-')
     tuesday_time = models.CharField(max_length=100, verbose_name='Вівторок', unique=False, default='-')
     wednesday_time = models.CharField(max_length=100, verbose_name='Середа', unique=False, default='-')
@@ -72,8 +113,8 @@ class Group(models.Model):
     friday_time = models.CharField(max_length=100, verbose_name="П'ятниця", unique=False, default='-')
     saturday_time = models.CharField(max_length=100, verbose_name='Субота', unique=False, default='-')
     sunday_time = models.CharField(max_length=100, verbose_name='Неділя', unique=False, default='-')
-
-    images_for_slider = models.ManyToManyField('ImagesForSlider', related_name='children')
+    images_for_slider = models.ManyToManyField(ImagesForSlider, related_name='group')                   # images list for slider
+    music_for_player = models.ManyToManyField(GroupMusic, related_name='group')                         # mucis list for render
 
     class Meta:
         verbose_name = _('Група')
@@ -85,7 +126,7 @@ class Group(models.Model):
     def get_img(self):
         return self.group_image.url
 
-    def get_image_gor_slider(self):
+    def get_img_slider(self):
         return self.images_for_slider.url
 
     def music_name(self):
@@ -116,5 +157,4 @@ class Trainer(models.Model):
         return self.last_name
 
 
-class ImagesForSlider(models.Model):
-    image = models.ImageField(upload_to='base/static/images/')
+
